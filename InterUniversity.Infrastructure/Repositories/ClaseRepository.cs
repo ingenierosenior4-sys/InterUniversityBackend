@@ -6,11 +6,18 @@ namespace InterUniversity.Infrastructure.Repositories;
 
 public sealed class ClaseRepository(UniversidadDbContext dbContext) : Repository<Clase>(dbContext), IClaseRepository
 {
-    public IQueryable<Clase> ObtenerClasesEstudiante(int estudianteId)
-        => Entities.Where(c => c.EstudianteId == estudianteId);
+    public async Task<List<Clase>> ObtenerClasesEstudiante(int estudianteId, CancellationToken cancellationToken)
+        => await Entity
+               .Include(c => c.MateriaProfesor.Materia)
+               .Include(c => c.MateriaProfesor.Profesor.ProfesorNavigation)
+               .Where(c => c.EstudianteId == estudianteId)
+               .ToListAsync(cancellationToken);
 
-    public IQueryable<Clase> ObtenerClaseEstudiantes(int materiaId, int profesorId)
-        => Entities.Where(m => m.MateriaId == materiaId && m.ProfesorId == profesorId)
-            .Include(m => m.Estudiante)
-            .ThenInclude(e => e.EstudianteNavigation);
+    public async Task<string[]> ObtenerEstudiantes(int materiaId, int profesorId, CancellationToken cancellationToken)
+        => await Entity
+               .Where(m => m.MateriaId == materiaId && m.ProfesorId == profesorId)
+               .Include(m => m.Estudiante)
+               .ThenInclude(e => e.EstudianteNavigation)
+               .Select(m => $"{m.Estudiante.EstudianteNavigation.Nombres} {m.Estudiante.EstudianteNavigation.Apellidos}")
+               .ToArrayAsync(cancellationToken);
 }

@@ -9,16 +9,16 @@ namespace InterUniversity.Infrastructure.Repositories;
 public sealed class EstudianteRepository(UniversidadDbContext dbContext) : Repository<Estudiante>(dbContext), IEstudianteRepository
 {
     public Task<PagedResult<Estudiante>> ObtenerEstudiantesPaginado(int pageSize, int currentPage)
-        => Entities
+        => Entity
             .Include(e => e.EstudianteNavigation)
             .OrderBy(e => e.EstudianteNavigation!.Nombres)
             .GetPagedResultAsync(pageSize, currentPage);
 
     public Task<Estudiante?> ObtenerEstudiante(int estudianteId)
-        => Entities
+        => Entity
             .Include(e => e.EstudianteNavigation)
             .FirstOrDefaultAsync(e => e.EstudianteId == estudianteId);
 
     public Task<bool> ExisteEstudiante(int estudianteId)
-        => Entities.AnyAsync(e => e.EstudianteId == estudianteId);
+        => Entity.AnyAsync(e => e.EstudianteId == estudianteId);
 }

@@ -20,10 +20,10 @@ public class ClaseController(IMediator mediator) : ControllerBase
 
     [HttpGet("{id}")]
     public Task<IEnumerable<GetClasesQueryResponse>> Get(int id)
-       => mediator.Send(new GetClasesQuery(id));
+        => mediator.Send(new GetClasesQuery(id));
 
     [HttpGet("{profesorId}/{materiaId}")]
     public Task<GetClaseQueryResponse> GetClase(int profesorId, int materiaId)
-       => mediator.Send(new GetClaseQuery(profesorId, materiaId));
+        => mediator.Send(new GetClaseQuery(profesorId, materiaId));
 
 }

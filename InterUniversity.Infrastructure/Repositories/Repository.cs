@@ -7,16 +7,14 @@ public abstract class Repository<TEntity>(UniversidadDbContext dbContext)
 {
     protected readonly UniversidadDbContext DbContext = dbContext;
 
-    protected DbSet<TEntity> Entities => DbContext.Set<TEntity>();
+    protected DbSet<TEntity> Entity => DbContext.Set<TEntity>();
 
-    public Task<TEntity?> FindAsync(params object?[] keyValues) => Entities.FindAsync(keyValues).AsTask();
+    public Task<TEntity?> FindAsync(params object?[] keyValues) => Entity.FindAsync(keyValues).AsTask();
 
-    public void Add(TEntity entity) => Entities.Add(entity);
+    public void Add(TEntity entity) => Entity.Add(entity);
 
-    public void AddRange(IEnumerable<TEntity> entities) => Entities.AddRange(entities);
+    public void AddRange(IEnumerable<TEntity> entities) => Entity.AddRange(entities);
 
-    public void Remove(TEntity entity) => Entities.Remove(entity);
-
-    public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) => DbContext.SaveChangesAsync(cancellationToken);
+    public void Remove(TEntity entity) => Entity.Remove(entity);
 }
 

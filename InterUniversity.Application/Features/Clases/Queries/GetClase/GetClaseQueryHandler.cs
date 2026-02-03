@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
+using InterUniversity.Application.Exceptions;
 using InterUniversity.Domain.Repositories;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace InterUniversity.Application.Features.Clases.Queries.GetClase;
 
@@ -13,16 +12,13 @@ public class GetClaseQueryHandler(
 {
     public async Task<GetClaseQueryResponse> Handle(GetClaseQuery request, CancellationToken cancellationToken)
     {
-        var response = await materiaProfesorRepository.ObtenerClaseEstudiante(request.MateriaId, request.ProfesorId)
-            .ProjectTo<GetClaseQueryResponse>(mapper.ConfigurationProvider)
-            .FirstOrDefaultAsync(cancellationToken);
+        var clase = await materiaProfesorRepository
+            .ObtenerClaseEstudiante(request.MateriaId, request.ProfesorId, cancellationToken) ?? throw new NotFoundException("No se encontro la clase");
 
-        if (response != null)
-        {
-            response.Estudiantes = await claseRepository.ObtenerClaseEstudiantes(request.MateriaId, request.ProfesorId)
-                .Select(m => $"{m.Estudiante.EstudianteNavigation.Nombres} {m.Estudiante.EstudianteNavigation.Apellidos}")
-                .ToArrayAsync(cancellationToken);
-        }
+        var response = mapper.Map<GetClaseQueryResponse>(clase);
+
+        response.Estudiantes = await claseRepository.ObtenerEstudiantes(request.MateriaId, request.ProfesorId, cancellationToken);
+
 
         return response!;
     }

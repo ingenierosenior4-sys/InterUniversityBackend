@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using InterUniversity.Domain.Repositories;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace InterUniversity.Application.Features.Clases.Queries.Get;
 
@@ -12,8 +10,8 @@ public class GetClasesQueryHandler(
 {
     public async Task<IEnumerable<GetClasesQueryResponse>> Handle(GetClasesQuery request, CancellationToken cancellationToken)
     {
-        return await claseRepository.ObtenerClasesEstudiante(request.EstudianteId)
-            .ProjectTo<GetClasesQueryResponse>(mapper.ConfigurationProvider)
-            .ToListAsync(cancellationToken);
+        var clasesEstudiante = await claseRepository.ObtenerClasesEstudiante(request.EstudianteId, cancellationToken);
+
+        return mapper.Map<IEnumerable<GetClasesQueryResponse>>(clasesEstudiante);
     }
 }

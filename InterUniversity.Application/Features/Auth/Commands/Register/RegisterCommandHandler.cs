@@ -14,7 +14,6 @@ public class RegisterCommandHandler(
     IUnitOfWork unitOfWork,
     IMediator mediator) : IRequestHandler<RegisterCommand, LoginCommandResponse>
 {
-
     public async Task<LoginCommandResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
         var numero = request.NumeroIdentificacion.Trim();
