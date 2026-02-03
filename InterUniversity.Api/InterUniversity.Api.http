@@ -1,0 +1,6 @@
+@InterUniversity.Api_HostAddress = http://localhost:5101
+
+GET {{InterUniversity.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

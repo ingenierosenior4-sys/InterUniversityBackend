@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="InterUniversity.Api/InterUniversity.Api.csproj" />
+    <Project Path="InterUniversity.Application/InterUniversity.Application.csproj" />
+    <Project Path="InterUniversity.Domain/InterUniversity.Domain.csproj" />
+    <Project Path="InterUniversity.Infrastructure/InterUniversity.Infrastructure.csproj" />
+    <Project Path="InterUniversity.UnitTests/InterUniversity.UnitTests.csproj" Id="d371f2c0-d1ff-49b4-b1fb-6fd5afbcc9c5" />
+  </Folder>
+</Solution>
