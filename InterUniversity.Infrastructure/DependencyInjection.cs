@@ -1,5 +1,6 @@
 ﻿using InterUniversity.Domain.Abstractions;
 using InterUniversity.Domain.Repositories;
+using InterUniversity.Infrastructure.Abstractions;
 using InterUniversity.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -9,13 +10,12 @@ namespace InterUniversity.Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddInfrastructure(
-      this IServiceCollection services,
-      IConfiguration configuration
-      )
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString("Database")
+        var encryptedConnectionString = configuration.GetConnectionString("Database")
              ?? throw new ArgumentNullException(nameof(configuration));
+
+        var connectionString = ConnectionStringDecryptor.Decrypt(encryptedConnectionString);
 
         services.AddDbContext<UniversidadDbContext>(options => options.UseSqlServer(connectionString));
 
