@@ -7,9 +7,7 @@ namespace InterUniversity.Infrastructure.Repositories;
 public sealed class UsuarioRepository(UniversidadDbContext dbContext) : Repository<Usuario>(dbContext), IUsuarioRepository
 {
     public Task<Usuario?> ObtenerUsuarioEstudiante(int estudianteId)
-        => Entity
-            .Where(u => u.Estudiante != null && u.Estudiante.EstudianteId == estudianteId)
-            .FirstOrDefaultAsync();
+        => Entity.FirstOrDefaultAsync(u => u.Estudiante != null && u.Estudiante.EstudianteId == estudianteId);
 
     public Task<bool> ExisteUsuarioEstudiante(string numeroIdentificacion, int excludeUsuarioId)
         => Entity.AnyAsync(u => u.NumeroIdentificacion == numeroIdentificacion && u.UsuarioId != excludeUsuarioId);
